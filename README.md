@@ -25,6 +25,19 @@ bash scripts/start-openclaw-wsl.sh
 - 已在 WSL Ubuntu 中安装 OpenClaw
 - 建议先完成：`openclaw onboard --install-daemon`
 
+### 日志说明
+
+Ubuntu / WSL 启动脚本会把日志写到：`~/.openclaw/logs/start-openclaw-wsl.log`
+
+如果 Windows 双击后窗口一闪而过，请：
+- 重新运行 `scripts/start-openclaw-wsl.bat`
+- 脚本现在会自动 `pause`，方便查看错误
+- 也可以进入 WSL 查看日志：
+
+```bash
+cat ~/.openclaw/logs/start-openclaw-wsl.log
+```
+
 ### Windows 一键启动（调用 WSL）
 
 已提供批处理文件：`scripts/start-openclaw-wsl.bat`
