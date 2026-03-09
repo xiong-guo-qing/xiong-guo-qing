@@ -22,14 +22,24 @@ run_and_log() {
   "$@" 2>&1 | tee -a "$LOG_FILE"
 }
 
+# 尽量恢复交互 shell 常见 PATH，避免 Windows -> WSL 调用时找不到 npm 全局命令
+[ -f "$HOME/.profile" ] && . "$HOME/.profile" || true
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc" || true
+export PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PATH"
+
 log "===== script start ====="
 log "User: $(whoami)"
 log "PWD: $(pwd)"
+log "PATH: $PATH"
 
 if ! command -v openclaw >/dev/null 2>&1; then
-  log "未找到 openclaw 命令。请先安装 OpenClaw。"
+  log "未找到 openclaw 命令。请先确认它已安装在 WSL 中。"
+  log "提示：当前脚本已尝试加载 ~/.profile、~/.bashrc，并追加 ~/.npm-global/bin 到 PATH。"
   exit 1
 fi
+
+OPENCLAW_BIN="$(command -v openclaw)"
+log "OpenClaw binary: $OPENCLAW_BIN"
 
 log "检查 Gateway 状态..."
 STATUS_OUTPUT="$(openclaw gateway status 2>&1 || true)"
