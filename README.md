@@ -59,3 +59,25 @@ scripts\start-openclaw-wsl.bat
 - 默认发行版名写的是 `Ubuntu`
 - 如果你的 WSL 发行版不是这个名字，请编辑 `.bat` 中的 `WSL_DISTRO`
 - 当前脚本内的 WSL 路径写的是：`/home/xgq/xiong-guo-qing/scripts/start-openclaw-wsl.sh`
+
+
+### 停止脚本
+
+已提供：
+- `scripts/stop-openclaw-wsl.sh`（Ubuntu / WSL）
+- `scripts/stop-openclaw-wsl.bat`（Windows 调用 WSL）
+
+Ubuntu / WSL 中执行：
+
+```bash
+bash scripts/stop-openclaw-wsl.sh
+```
+
+Windows 中执行：
+
+```bat
+scripts\stop-openclaw-wsl.bat
+```
+
+日志位置：
+- `~/.openclaw/logs/stop-openclaw-wsl.log`
