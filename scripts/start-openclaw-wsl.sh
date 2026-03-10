@@ -45,7 +45,7 @@ log "检查 Gateway 状态..."
 STATUS_OUTPUT="$(openclaw gateway status 2>&1 || true)"
 printf '%s\n' "$STATUS_OUTPUT" | tee -a "$LOG_FILE"
 
-if printf '%s' "$STATUS_OUTPUT" | grep -qiE 'runtime:\s*running|rpc probe:\s*ok'; then
+if printf '%s' "$STATUS_OUTPUT" | grep -qiE 'runtime:\s*running'; then
   log "OpenClaw 已在运行，无需重复启动。"
   log "日志文件：$LOG_FILE"
   exit 0
