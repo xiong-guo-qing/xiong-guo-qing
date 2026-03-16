@@ -7,6 +7,7 @@
 - 不重复全局通用规则
 - 只记录项目特有信息
 - 让 AI 在进入项目后快速理解上下文、边界、命令和风险点
+- 让短期记忆与长期记忆的落点更稳定，便于后续检索
 
 ---
 
@@ -77,7 +78,6 @@
 - `app/`：
 - `server/`：
 - `docs/`：
-- `scripts/`：
 - `tests/`：
 
 ### 修改边界
@@ -129,13 +129,26 @@
 
 ---
 
-## 7. 文档与记忆回写位置
+## 7. 推荐的短期记忆落点
 
-### 短期记忆
-优先写入：
-- `memory/inbox.md`
-- `memory/daily/YYYY-MM-DD.md`
-- `memory/tasks/<task-name>.md`
+建议在项目内使用如下结构：
+
+```text
+memory/
+  inbox.md
+  daily/
+    YYYY-MM-DD.md
+  tasks/
+    <task-name>.md
+  scratch/
+    ideas.md
+```
+
+建议分工：
+- `memory/inbox.md`：临时收集，还没归类的信息先放这里
+- `memory/daily/YYYY-MM-DD.md`：当天上下文、进展、待续事项
+- `memory/tasks/<task-name>.md`：任务目标、约束、过程、状态、待办
+- `memory/scratch/`：草稿、一次性命令、临时方案比较
 
 适合放入短期记忆的内容：
 - 当前任务目标
@@ -143,8 +156,29 @@
 - 中间状态
 - 排查过程
 - 待验证判断
+- 当前中断点和下一步建议
 
-### 长期知识
+---
+
+## 8. 推荐的长期知识落点
+
+建议长期知识优先沉淀到稳定主题，而不是散落命名：
+
+```text
+ai-memory/
+  projects/
+    <project>/
+      overview.md
+      architecture.md
+      conventions.md
+      commands.md
+      gotchas.md
+  decisions/
+  playbooks/
+  stack/
+  snippets/
+```
+
 适合更新到：
 - `overview.md`：项目概况变化
 - `architecture.md`：架构变化
@@ -152,16 +186,18 @@
 - `commands.md`：新增常用命令
 - `gotchas.md`：新坑与排障方案
 - `decisions/`：关键决策
+- `playbooks/`：稳定流程，如部署、排障、迁移步骤
 - `basic-memory`：长期稳定、可复用知识
 
 原则：
 - 过程性内容先进入短期记忆
 - 结论性内容再进入长期知识
-- 未验证内容不要写入长期层
+- 项目知识、流程知识、技术栈知识尽量分层存放
+- 长期文档尽量使用稳定命名，便于检索
 
 ---
 
-## 8. 任务完成时建议汇报结构
+## 9. 任务完成时建议汇报结构
 
 任务结束时，尽量用下面结构汇报：
 - 做了什么
@@ -172,8 +208,8 @@
 
 ---
 
-## 9. 可直接替换的精简版
+## 10. 可直接替换的精简版
 
 如果你想写一个更短的项目版 `AI-PROJECT-RULES.md`，可以用这段：
 
-> 本文件只补充当前项目的专属上下文、目录边界、运行命令、已知坑点和项目约定；未特别说明的通用行为默认遵循 `AI-RULES.md`。开始任务前先读取 README、AI-RULES.md、AI-PROJECT-RULES.md、相关文档和知识库，再结合当前任务定位需要修改的代码与测试。过程性信息优先写入短期记忆，稳定结论再写入长期知识或项目文档。
+> 本文件只补充当前项目的专属上下文、目录边界、运行命令、已知坑点和项目约定；未特别说明的通用行为默认遵循 `AI-RULES.md`。开始任务前先读取 README、AI-RULES.md、AI-PROJECT-RULES.md、相关文档和知识库，再结合当前任务定位需要修改的代码与测试。过程性信息优先写入 `memory/inbox.md`、`memory/daily/`、`memory/tasks/`、`memory/scratch/` 等短期记忆位置；稳定结论再写入 `overview.md`、`architecture.md`、`conventions.md`、`commands.md`、`gotchas.md`、`decisions/` 或长期知识库。

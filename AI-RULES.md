@@ -43,18 +43,30 @@
 
 如果接入了 memory / knowledge system，必须先查询。
 
-### 2.3 记忆查询顺序
-当环境同时使用**长期记忆**和**短期记忆**时，必须遵循以下顺序：
+### 2.3 默认检索顺序
+当环境同时使用**长期记忆**和**短期记忆**时，建议遵循以下检索顺序，以提高命中率并减少噪音：
 
-1. **先查询长期记忆（basic-memory）**
-   - 获取长期项目知识
-   - 获取架构、约定、命令、已知坑、历史决策
-2. **再查询短期记忆**
-   - 获取最近对话内容
-   - 获取当前任务上下文
-   - 获取临时要求、过程状态、短期约束
+1. **先读规则与项目说明**
+   - `AI-RULES.md`
+   - `AI-PROJECT-RULES.md`（若存在）
+   - `README.md`
+2. **再读短期记忆**
+   - `memory/tasks/<current-task>.md`（若存在）
+   - `memory/inbox.md`
+   - 最近 1-2 天的 `memory/daily/YYYY-MM-DD.md`
+3. **再查长期记忆（basic-memory）**
+   - `projects/<project>/overview.md`
+   - `architecture.md`
+   - `conventions.md`
+   - `commands.md`
+   - `gotchas.md`
+   - `decisions/`
+   - 必要时再查 `playbooks/`、`stack/`、`snippets/`
 
-禁止只依赖最近对话，而忽略长期知识库。
+原则：
+- 恢复当前任务上下文，优先看短期记忆
+- 获取稳定规则和已验证知识，优先看长期记忆
+- 不要只依赖最近对话，也不要先一头扎进大量长期文档
 
 ### 2.4 先搜索再实现
 在写代码前，先确认：
@@ -197,30 +209,40 @@
 
 它是**工作记忆 / 会话记忆**，允许内容更细碎、写入更频繁。
 
-短期记忆可以通过以下方式组织，便于查找与后续回收：
-- 当前会话上下文
-- 仓库内 `memory/` 目录
-- `memory/inbox.md`：临时记录入口
-- `memory/tasks/<task-name>.md`：按任务存放过程记录
-- `memory/daily/YYYY-MM-DD.md`：按日期记录当天上下文
-- `scratch/`、`notes/`、`task-log/` 等本地临时目录（如果项目已有约定则遵循项目约定）
+短期记忆的目标不是永久保存，而是：
+- 快速恢复当前任务上下文
+- 降低会话中断后的恢复成本
+- 把过程性噪音和长期知识隔离开
 
-如果项目里还没有短期记忆目录，优先创建以下最小结构：
+### 4.2 推荐的短期记忆结构
+短期记忆优先放在项目仓库内部，使用稳定命名，方便 AI 和人类快速检索：
 
 ```text
 memory/
   inbox.md
   daily/
+    YYYY-MM-DD.md
   tasks/
+    <task-name>.md
+  scratch/
+    ideas.md
+    temp-notes.md
 ```
+
+建议分工：
+- `memory/inbox.md`：临时入口，先记再分类
+- `memory/daily/YYYY-MM-DD.md`：当天上下文、工作记录、待续事项
+- `memory/tasks/<task-name>.md`：按任务聚合目标、约束、过程、状态与待办
+- `memory/scratch/`：草稿、一次性笔记、临时方案比较
 
 要求：
 - 临时内容优先进入 `memory/inbox.md`
-- 任务推进过程优先进入 `memory/tasks/`
-- 每日上下文优先进入 `memory/daily/`
+- 中等以上任务优先创建 `memory/tasks/<task-name>.md`
+- 需要跨会话续做的事项尽量写进 `memory/tasks/` 或 `memory/daily/`
+- `scratch/` 可以脏，但 `tasks/` 和 `daily/` 应尽量清晰可读
 - 目录命名保持稳定，避免同类信息散落多处
 
-### 4.2 长期记忆的职责
+### 4.3 长期记忆的职责
 用于保存**长期、稳定、可复用的知识**，包括：
 - 项目背景
 - 架构说明
@@ -233,7 +255,48 @@ memory/
 它是**长期知识库**，要求内容准确、结构化、低噪音。
 默认由 **basic-memory** 承担。
 
-### 4.3 写入规则
+### 4.4 推荐的长期记忆结构
+长期记忆建议参考 `basic-memory` 官方思路，采用**主题稳定、命名稳定、文档较小且聚焦**的结构：
+
+```text
+ai-memory/
+  projects/
+    <project>/
+      overview.md
+      architecture.md
+      conventions.md
+      commands.md
+      gotchas.md
+  decisions/
+    adr-001-*.md
+  playbooks/
+    deploy.md
+    debug-*.md
+  stack/
+    <technology>.md
+  snippets/
+    git.md
+    shell.md
+```
+
+建议分工：
+- `projects/<project>/`：项目专属长期知识
+- `overview.md`：项目目标、模块、范围、阶段
+- `architecture.md`：结构、数据流、关键边界
+- `conventions.md`：命名、风格、约定、限制
+- `commands.md`：稳定可复用命令
+- `gotchas.md`：高频坑点、根因、已验证修复方案
+- `decisions/`：重要决策与变更原因
+- `playbooks/`：流程型知识，如部署、回滚、排障流程
+- `stack/`：跨项目技术栈知识
+- `snippets/`：高频命令、模板、片段
+
+原则：
+- 长期文档尽量小而专，不要堆成大杂烩
+- 文件名尽量稳定，例如 `overview.md`、`architecture.md`、`commands.md`
+- 项目知识、通用知识、决策记录要分层，避免混杂
+
+### 4.5 写入规则
 #### 默认写入短期记忆的内容
 以下内容优先写入**短期记忆**：
 - 当前任务目标
@@ -242,6 +305,8 @@ memory/
 - 本轮会话里的上下文
 - 还没验证的想法
 - 当前调试过程
+- 实验结果
+- 待办项与中断点
 
 #### 只有满足以下条件时才写入长期记忆
 只有同时满足以下条件，才允许写入**长期记忆 / basic-memory**：
@@ -251,7 +316,7 @@ memory/
 4. 适合结构化表达
 5. 能减少未来重复解释或重复踩坑
 
-### 4.4 知识晋升规则
+### 4.6 知识晋升规则
 每次任务完成后，检查是否有内容需要从**短期记忆**晋升到**长期记忆**。
 
 适合晋升的内容：
@@ -262,6 +327,7 @@ memory/
 - 已明确的架构变化
 - 已拍板的技术决策
 - 长期有效的偏好
+- 跨任务可复用的流程或 playbook
 
 不适合晋升的内容：
 - 无结论排查过程
@@ -269,8 +335,9 @@ memory/
 - 一次性需求说明
 - 纯聊天内容
 - 很快过期的信息
+- 零散草稿
 
-### 4.5 去噪规则
+### 4.7 去噪规则
 不要把**长期记忆**当作聊天记录仓库。
 
 写入长期记忆时必须：
@@ -279,8 +346,9 @@ memory/
 - 去掉未验证猜测
 - 保留结论、原因、约束和可执行信息
 - 尽量使用清晰标题和结构化组织
+- 尽量把稳定结论写进固定主题文档，而不是任意新建文件
 
-### 4.6 冲突处理规则
+### 4.8 冲突处理规则
 如果**短期记忆**中的最新内容与**长期记忆**中的长期知识冲突：
 
 1. 不要直接覆盖长期知识
@@ -289,7 +357,7 @@ memory/
 4. 如果确认长期规则已改变，再更新长期记忆
 5. 更新时说明变更原因，避免前后矛盾
 
-### 4.7 质量优先规则
+### 4.9 质量优先规则
 原则上：
 - **短期记忆可以更全**
 - **长期记忆必须更准**
@@ -300,43 +368,41 @@ memory/
 
 ## 5. 推荐目录结构
 
-### 5.1 长期知识目录
-
-```text
-ai-memory/
-  inbox/
-  projects/
-    project-a/
-      overview.md
-      architecture.md
-      conventions.md
-      commands.md
-      gotchas.md
-      roadmap.md
-  decisions/
-  stack/
-  playbooks/
-  snippets/
-```
-
-### 5.2 短期记忆目录
+### 5.1 短期记忆目录
 
 ```text
 memory/
   inbox.md
   daily/
+    YYYY-MM-DD.md
   tasks/
+    <task-name>.md
+  scratch/
+    ideas.md
 ```
 
-建议分工：
-- `memory/inbox.md`：临时收集、待整理信息
-- `memory/daily/YYYY-MM-DD.md`：按天记录上下文
-- `memory/tasks/<task-name>.md`：按任务记录过程与中间结论
+### 5.2 长期知识目录
 
-原则：
-- 短期信息先进 `memory/`
-- 稳定结论再进入 `basic-memory`
-- 不要把同一类内容分散到多个无规律目录中
+```text
+ai-memory/
+  projects/
+    <project>/
+      overview.md
+      architecture.md
+      conventions.md
+      commands.md
+      gotchas.md
+  decisions/
+  playbooks/
+  stack/
+  snippets/
+```
+
+### 5.3 目录设计原则
+- 短期记忆服务当前任务恢复，长期记忆服务稳定知识检索
+- 同一类信息尽量落在固定位置
+- 文件名尽量可预测、可搜索、可复用
+- 不要把任务过程、长期结论、通用技术知识混在同一层级
 
 ---
 
@@ -351,6 +417,7 @@ memory/
 - `commands`
 - `gotchas`
 - 历史决策
+- 必要时再查相关 `playbooks`、`stack`、`snippets`
 
 ### 6.2 只写高价值长期知识
 适合写入的内容：
@@ -360,12 +427,14 @@ memory/
 - 关键架构信息
 - 重要命令
 - 高复发问题的修复方法
+- 稳定的部署 / 排障流程
 
 不适合写入的内容：
 - 未验证猜测
 - 临时调试过程
 - 冗长聊天记录
 - 一次性任务描述
+- 只在当前会话有意义的上下文
 
 ### 6.3 先搜再写
 在新增知识前，先确认有没有现有记录，避免重复和冲突。
@@ -382,6 +451,19 @@ memory/
 如果信息仍处于排查、讨论、实验阶段：
 - 先记录到短期记忆层
 - 等结论稳定后，再提炼写入长期记忆
+
+### 6.6 稳定命名优先
+为了提升 AI 与人类的检索效率，长期知识优先使用稳定命名：
+- `overview.md`
+- `architecture.md`
+- `conventions.md`
+- `commands.md`
+- `gotchas.md`
+
+避免出现同义但不稳定的文件名，例如：
+- `项目说明终版2.md`
+- `经验总结-new.md`
+- `notes-final-final.md`
 
 ---
 
@@ -418,4 +500,4 @@ memory/
 
 如果只允许很短的提示词，可使用：
 
-> 先读取仓库中的 AI-RULES.md、README、相关代码和知识库，再开始修改。本环境使用两层记忆：短期记忆用于记录对话级、过程级、临时级信息；长期记忆（basic-memory）用于保存长期、稳定、可复用的知识。开始任务前，先查询长期记忆获取项目背景、架构和约定，再结合当前会话与短期记忆理解任务状态。中间发现、临时约束和待验证信息优先进入短期记忆；只有已验证、长期有效且适合结构化表达的内容，才提炼写入长期记忆。优先最小正确改动，遵循现有模式，不编造 API、路径、配置和测试结果。修改后尽可能验证，避免无关重构和高风险操作。
+> 先读取仓库中的 AI-RULES.md、README、相关代码和知识库，再开始修改。本环境使用两层记忆：短期记忆用于记录对话级、过程级、临时级信息，优先放在 `memory/inbox.md`、`memory/daily/`、`memory/tasks/`、`memory/scratch/`；长期记忆（basic-memory）用于保存长期、稳定、可复用的知识，优先采用 `projects/<project>/overview.md`、`architecture.md`、`conventions.md`、`commands.md`、`gotchas.md`、`decisions/` 等稳定结构。开始任务前，先读规则和项目说明，再恢复短期任务上下文，最后查询长期知识。中间发现、临时约束和待验证信息优先进入短期记忆；只有已验证、长期有效且适合结构化表达的内容，才提炼写入长期记忆。优先最小正确改动，遵循现有模式，不编造 API、路径、配置和测试结果。修改后尽可能验证，避免无关重构和高风险操作。
