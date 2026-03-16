@@ -5,6 +5,29 @@ This repository stores my AI coding agent rules and project guidance.
 ## Files
 
 - `AGENTS.md` — operational rules for AI coding tools, optimized for Antigravity
+- `GEMINI-global.md` — global execution rules, including short-term vs long-term memory guidance
+- `BASIC-MEMORY-RULES.md` — long-term knowledge base rules for `basic-memory`
+
+## Memory model
+
+This repo now uses a two-layer memory model:
+
+- **Short-term memory**: for conversation state, temporary constraints, debugging progress, and task process notes
+- **Long-term memory (`basic-memory`)**: for stable, verified, reusable knowledge
+
+Recommended short-term memory structure inside a project:
+
+```text
+memory/
+  inbox.md
+  daily/
+  tasks/
+```
+
+Recommended usage:
+- `memory/inbox.md` — temporary capture
+- `memory/daily/` — daily context and session notes
+- `memory/tasks/` — per-task progress and intermediate findings
 
 ## OpenClaw WSL 后台启动脚本
 
