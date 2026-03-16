@@ -1,20 +1,20 @@
 # xiong-guo-qing
 
-This repository stores general rules and guidance for AI coding assistants.
+这个仓库用于存放通用的 AI 编程助手规则与模板。
 
-## Main documents
+## 主要文件
 
-- `AI-RULES.md` — the single source of truth for general AI coding rules, workflow, safety, and memory model
-- `AI-PROJECT-RULES-template.md` — a project-level template for repository-specific context, boundaries, and conventions
+- `AI-RULES.md`：全局通用规则，包含工作流、安全规则、记忆模型、沟通方式等
+- `AI-PROJECT-RULES-template.md`：项目级规则模板，用于补充某个具体项目的上下文、边界和约定
 
-## Memory model
+## 记忆模型
 
-This repo uses a two-layer memory model:
+本仓库采用双层记忆模型：
 
-- **Short-term memory**: for conversation state, temporary constraints, debugging progress, and task process notes
-- **Long-term memory (`basic-memory`)**: for stable, verified, reusable knowledge
+- **短期记忆**：用于保存会话状态、临时约束、调试过程、任务中间记录
+- **长期记忆（basic-memory）**：用于保存稳定、已验证、可复用的知识
 
-Recommended short-term memory structure inside a project:
+推荐在具体项目中使用如下短期记忆目录结构：
 
 ```text
 memory/
@@ -23,45 +23,45 @@ memory/
   tasks/
 ```
 
-## Scripts
+## 脚本仓库
 
-Reusable scripts have been moved to a separate repository:
+可复用脚本已迁移到独立仓库：
 
-- HTTPS: `https://github.com/xiong-guo-qing/scripts`
-- SSH: `git@github.com:xiong-guo-qing/scripts.git`
+- HTTPS：`https://github.com/xiong-guo-qing/scripts`
+- SSH：`git@github.com:xiong-guo-qing/scripts.git`
 
-This repository now focuses on rules and templates only.
+当前仓库现在主要只保留规则和模板，不再存放共享脚本。
 
-### How to get the shared scripts
+### 如何获取共享脚本
 
-#### Clone the scripts repository
+#### 使用 SSH 克隆
 
 ```bash
 git clone git@github.com:xiong-guo-qing/scripts.git
 ```
 
-Or via HTTPS:
+#### 或使用 HTTPS 克隆
 
 ```bash
 git clone https://github.com/xiong-guo-qing/scripts.git
 ```
 
-#### Pull updates later
+#### 后续更新脚本
 
 ```bash
 cd scripts
 git pull
 ```
 
-### Included shared scripts
+### 脚本仓库包含的内容
 
-The shared scripts repository contains items such as:
-- OpenClaw WSL startup / shutdown scripts
-- Windows helper scripts
-- `windows-java-service/` related maintenance scripts
+独立脚本仓库目前包含例如：
+- OpenClaw WSL 启动 / 停止脚本
+- Windows 辅助脚本
+- `windows-java-service/` 相关维护脚本
 
-## Notes
+## 说明
 
-- `AI-RULES.md` is the global, tool-agnostic rule file
-- `AI-PROJECT-RULES-template.md` is the per-project overlay template
-- Shared scripts are maintained outside this rules repository to avoid duplication
+- `AI-RULES.md` 是通用、工具无关的主规则文件
+- `AI-PROJECT-RULES-template.md` 是项目级覆盖模板
+- 共享脚本独立维护，避免和规则仓库混在一起
