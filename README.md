@@ -1,16 +1,14 @@
 # xiong-guo-qing
 
-This repository stores my AI coding agent rules and project guidance.
+This repository stores general rules and guidance for AI coding assistants.
 
-## Files
+## Main document
 
-- `AGENTS.md` — operational rules for AI coding tools, optimized for Antigravity
-- `GEMINI-global.md` — global execution rules, including short-term vs long-term memory guidance
-- `BASIC-MEMORY-RULES.md` — long-term knowledge base rules for `basic-memory`
+- `AI-RULES.md` — the single source of truth for general AI coding rules, workflow, safety, and memory model
 
 ## Memory model
 
-This repo now uses a two-layer memory model:
+This repo uses a two-layer memory model:
 
 - **Short-term memory**: for conversation state, temporary constraints, debugging progress, and task process notes
 - **Long-term memory (`basic-memory`)**: for stable, verified, reusable knowledge
@@ -24,12 +22,9 @@ memory/
   tasks/
 ```
 
-Recommended usage:
-- `memory/inbox.md` — temporary capture
-- `memory/daily/` — daily context and session notes
-- `memory/tasks/` — per-task progress and intermediate findings
+## Scripts
 
-## OpenClaw WSL 后台启动脚本
+### OpenClaw WSL 后台启动脚本
 
 已提供脚本：`scripts/start-openclaw-wsl.sh`
 
@@ -82,7 +77,6 @@ scripts\start-openclaw-wsl.bat
 - 默认发行版名写的是 `Ubuntu`
 - 如果你的 WSL 发行版不是这个名字，请编辑 `.bat` 中的 `WSL_DISTRO`
 - 当前脚本内的 WSL 路径写的是：`/home/xgq/xiong-guo-qing/scripts/start-openclaw-wsl.sh`
-
 
 ### 停止脚本
 
