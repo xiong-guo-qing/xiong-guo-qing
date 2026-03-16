@@ -2,9 +2,10 @@
 
 This repository stores general rules and guidance for AI coding assistants.
 
-## Main document
+## Main documents
 
 - `AI-RULES.md` — the single source of truth for general AI coding rules, workflow, safety, and memory model
+- `AI-PROJECT-RULES-template.md` — a project-level template for repository-specific context, boundaries, and conventions
 
 ## Memory model
 
@@ -24,77 +25,23 @@ memory/
 
 ## Scripts
 
-### OpenClaw WSL 后台启动脚本
+Reusable scripts are being moved into a separate repository:
 
-已提供脚本：`scripts/start-openclaw-wsl.sh`
+- `https://github.com/xiong-guo-qing/scripts`
 
-用途：
-- 检查 OpenClaw Gateway 是否已运行
-- 若未运行，则调用官方命令 `openclaw gateway start` 后台启动
-- 启动后再次输出状态
+This repository should primarily keep rules and templates.
+Project-specific repositories can reference shared scripts from the dedicated scripts repository.
 
-使用方法：
+### OpenClaw WSL scripts
 
-```bash
-bash scripts/start-openclaw-wsl.sh
-```
+Related startup / shutdown scripts are intended to live in the shared scripts repository, including:
+- `start-openclaw-wsl.sh`
+- `start-openclaw-wsl.bat`
+- `stop-openclaw-wsl.sh`
+- `stop-openclaw-wsl.bat`
 
-前提：
-- 已在 WSL Ubuntu 中安装 OpenClaw
-- 建议先完成：`openclaw onboard --install-daemon`
+### Notes
 
-### 日志说明
-
-Ubuntu / WSL 启动脚本会把日志写到：`~/.openclaw/logs/start-openclaw-wsl.log`
-
-如果 Windows 双击后窗口一闪而过，请：
-- 重新运行 `scripts/start-openclaw-wsl.bat`
-- 脚本现在会自动 `pause`，方便查看错误
-- 也可以进入 WSL 查看日志：
-
-```bash
-cat ~/.openclaw/logs/start-openclaw-wsl.log
-```
-
-### Windows 一键启动（调用 WSL）
-
-已提供批处理文件：`scripts/start-openclaw-wsl.bat`
-
-作用：
-- 在 Windows 中一键调用 WSL Ubuntu
-- 执行仓库内的 `scripts/start-openclaw-wsl.sh`
-- 自动检查并启动 OpenClaw Gateway
-
-使用方式：
-- 在 Windows 中双击 `.bat` 文件
-- 或在 cmd / PowerShell 中执行：
-
-```bat
-scripts\start-openclaw-wsl.bat
-```
-
-注意：
-- 默认发行版名写的是 `Ubuntu`
-- 如果你的 WSL 发行版不是这个名字，请编辑 `.bat` 中的 `WSL_DISTRO`
-- 当前脚本内的 WSL 路径写的是：`/home/xgq/xiong-guo-qing/scripts/start-openclaw-wsl.sh`
-
-### 停止脚本
-
-已提供：
-- `scripts/stop-openclaw-wsl.sh`（Ubuntu / WSL）
-- `scripts/stop-openclaw-wsl.bat`（Windows 调用 WSL）
-
-Ubuntu / WSL 中执行：
-
-```bash
-bash scripts/stop-openclaw-wsl.sh
-```
-
-Windows 中执行：
-
-```bat
-scripts\stop-openclaw-wsl.bat
-```
-
-日志位置：
-- `~/.openclaw/logs/stop-openclaw-wsl.log`
+- `AI-RULES.md` is the global, tool-agnostic rule file
+- `AI-PROJECT-RULES-template.md` is the per-project overlay template
+- Shared scripts are better maintained outside this rules repository
