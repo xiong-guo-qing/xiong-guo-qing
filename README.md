@@ -25,23 +25,43 @@ memory/
 
 ## Scripts
 
-Reusable scripts are being moved into a separate repository:
+Reusable scripts have been moved to a separate repository:
 
-- `https://github.com/xiong-guo-qing/scripts`
+- HTTPS: `https://github.com/xiong-guo-qing/scripts`
+- SSH: `git@github.com:xiong-guo-qing/scripts.git`
 
-This repository should primarily keep rules and templates.
-Project-specific repositories can reference shared scripts from the dedicated scripts repository.
+This repository now focuses on rules and templates only.
 
-### OpenClaw WSL scripts
+### How to get the shared scripts
 
-Related startup / shutdown scripts are intended to live in the shared scripts repository, including:
-- `start-openclaw-wsl.sh`
-- `start-openclaw-wsl.bat`
-- `stop-openclaw-wsl.sh`
-- `stop-openclaw-wsl.bat`
+#### Clone the scripts repository
 
-### Notes
+```bash
+git clone git@github.com:xiong-guo-qing/scripts.git
+```
+
+Or via HTTPS:
+
+```bash
+git clone https://github.com/xiong-guo-qing/scripts.git
+```
+
+#### Pull updates later
+
+```bash
+cd scripts
+git pull
+```
+
+### Included shared scripts
+
+The shared scripts repository contains items such as:
+- OpenClaw WSL startup / shutdown scripts
+- Windows helper scripts
+- `windows-java-service/` related maintenance scripts
+
+## Notes
 
 - `AI-RULES.md` is the global, tool-agnostic rule file
 - `AI-PROJECT-RULES-template.md` is the per-project overlay template
-- Shared scripts are better maintained outside this rules repository
+- Shared scripts are maintained outside this rules repository to avoid duplication
