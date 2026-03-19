@@ -6,7 +6,7 @@
 
 - `AI-RULES.md`：全局通用规则，包含工作流、安全规则、记忆模型、沟通方式等
 - `AI-RULES-SHORT.md`：适合 system prompt / repo prompt / 简短提示词场景的精简版规则
-- `AI-PROJECT-RULES-template.md`：项目级规则模板，用于补充某个具体项目的上下文、边界和约定
+- `AI-PROJECT-RULES.md`：项目级规则模板，用于补充某个具体项目的上下文、边界和约定
 
 ## 记忆模型
 
